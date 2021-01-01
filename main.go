@@ -59,9 +59,6 @@ var (
 	withBridgeHost   = flag.Bool("with-bridge-host", false, "retrieves bridge host metrics")
 
 	cfg *config.Config
-
-	appVersion = "DEVELOPMENT"
-	shortSha   = "0xDEADBEEF"
 )
 
 func init() {
