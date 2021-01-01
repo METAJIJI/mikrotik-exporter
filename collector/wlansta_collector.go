@@ -21,7 +21,7 @@ func newWlanSTACollector() routerOSCollector {
 }
 
 func (c *wlanSTACollector) init() {
-	c.props = []string{"interface", "mac-address", "uptime", "signal-to-noise", "signal-strength-ch0", "signal-strength-ch1", "tx-ccq", "rx-rate", "tx-rate", "packets", "bytes", "frames"}
+	c.props = []string{"interface", "mac-address", "uptime", "signal-to-noise", "signal-strength", "tx-ccq", "rx-rate", "tx-rate", "packets", "bytes", "frames"}
 	labelNames := []string{"name", "address", "interface", "mac_address"}
 	c.descriptions = make(map[string]*prometheus.Desc)
 	for _, p := range c.props[:len(c.props)-3] {
@@ -89,7 +89,12 @@ func (c *wlanSTACollector) collectMetricForProperty(property, iface, mac string,
 	case "rx-rate", "tx-rate":
 		v, err = parseWirelessRate(re.Map[property])
 	default:
-		v, err = strconv.ParseFloat(re.Map[property], 64)
+		p := re.Map[property]
+		i := strings.Index(p, "@")
+		if i > -1 {
+			p = p[:i]
+		}
+		v, err = strconv.ParseFloat(p, 64)
 	}
 
 	if err != nil {
