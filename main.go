@@ -71,8 +71,9 @@ func init() {
 func main() {
 	flag.Parse()
 
+	log.Print("Starting mikrotik-exporter", version.Info())
+	log.Print("Build context", version.BuildContext())
 	if *ver {
-		fmt.Printf("\nVersion:   %s\nShort SHA: %s\n\n", appVersion, shortSha)
 		os.Exit(0)
 	}
 
